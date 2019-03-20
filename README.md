@@ -1,7 +1,7 @@
 # circles
 Funny game with circles
 
-Open circles.htlm and hit the keys on your keyboard.
+Donwlonad files -> open circles.htlm -> hit the keys on your keyboard.
 
 Features:
 - JavaScript,
