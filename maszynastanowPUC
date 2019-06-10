@@ -1,0 +1,65 @@
+To ma działać tak: dostaje na wejście  0001 zegar(1) 0011 zegar(1) 0100 zegar(1) 1111 I wtedy zapala wyjscie2- w stanie zegar(0). 
+Jeżeli się ktoś pomyli przy wpisywaniu kolejnym sygnał tmp jest zerowany i trzeba od początku zaczynac. 
+Wejscie1 jest tylko dodatkowo w celu podglądu  czy dobrze łyknął ciąg, jak się wpisze np. 0001 to się wyświetli 0001. 
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+entity maszyna4 is
+
+port( 
+	wejscie:	in std_logic_vector ( 3 downto 0 );
+	zegar:	in std_logic;
+	wyjscie1:	out std_logic_vector ( 3 downto 0 );
+	wyjscie2:	out std_logic
+);
+
+end entity maszyna4;
+architecture beh of maszyna4 is
+signal tmp : std_logic_vector( 3 downto 0);	--trzeba wymyslec jak dodac wartosc poczatkowa
+
+begin
+	process (zegar, wejscie) is
+	begin
+		if zegar='1' then					--to dziala
+		--if rising_edge(zegar) then		-- it does not hold its value the clock edge
+			case wejscie is
+				when "0001"	=>	
+					wyjscie1 <= "0001"; 
+wyjscie2 <= '0'; 
+tmp <= "0001";	
+				when "0011"	=>	
+					wyjscie1 <= "0011"; 
+wyjscie2 <= '0'; 
+					if tmp="0001" then
+						tmp <= "0010";
+					end if;	
+				when "0111"	=>	
+					wyjscie1 <= "0111"; 
+wyjscie2 <= '0'; 
+					if tmp="0010" then
+						tmp <= "0100";
+					end if;
+				when "1111"	=>	
+					wyjscie1 <= "1111"; 
+wyjscie2 <= '0'; 
+tmp <= "1000";
+					if tmp="0100" then
+						tmp <= "1000";
+					end if;
+				when others	=>	
+					wyjscie1 <= "0000"; 
+					wyjscie2 <= '0';
+					tmp <= "0000";
+			end case;
+      
+		elsif zegar='0' then
+					wyjscie1 <= "0000"; 
+			if tmp="1000" then
+				wyjscie2 <= '1';
+			else
+				wyjscie2 <= '0';
+			end if;
+		end if;
+	end process;
+end architecture beh;
+ 
