@@ -4,62 +4,62 @@ Wejscie1 jest tylko dodatkowo w celu podglądu  czy dobrze łyknął ciąg, jak 
 
 library IEEE;
 use IEEE.std_logic_1164.all;
-entity maszyna4 is
 
+entity maszynastanow is
 port( 
-	wejscie:	in std_logic_vector ( 3 downto 0 );
-	zegar:	in std_logic;
-	wyjscie1:	out std_logic_vector ( 3 downto 0 );
-	wyjscie2:	out std_logic
+	we:	in std_logic_vector ( 3 downto 0 );
+	clk:	in std_logic;
+	wy1:	out std_logic_vector ( 3 downto 0 );
+	wy2:	out std_logic
 );
+end entity maszynastanow;
 
-end entity maszyna4;
-architecture beh of maszyna4 is
-signal tmp : std_logic_vector( 3 downto 0);	--trzeba wymyslec jak dodac wartosc poczatkowa
-
+architecture beh of maszynastanow is
+signal tmp : std_logic_vector( 3 downto 0);
 begin
-	process (zegar, wejscie) is
+	process (clk, we) is
 	begin
-		if zegar='1' then					--to dziala
-		--if rising_edge(zegar) then		-- it does not hold its value the clock edge
-			case wejscie is
+		if clk='1' then					
+			if rising_edge(clk) then
+			case we is
 				when "0001"	=>	
-					wyjscie1 <= "0001"; 
-wyjscie2 <= '0'; 
-tmp <= "0001";	
+					wy1 <= "0001"; 
+					wy2 <= '0'; 
+					tmp <= "0001";	
 				when "0011"	=>	
-					wyjscie1 <= "0011"; 
-wyjscie2 <= '0'; 
+					wy1 <= "0011"; 
+					wy2 <= '0'; 
 					if tmp="0001" then
 						tmp <= "0010";
 					end if;	
 				when "0111"	=>	
-					wyjscie1 <= "0111"; 
-wyjscie2 <= '0'; 
+					wy1 <= "0111"; 
+					wy2 <= '0'; 
 					if tmp="0010" then
 						tmp <= "0100";
 					end if;
 				when "1111"	=>	
-					wyjscie1 <= "1111"; 
-wyjscie2 <= '0'; 
-tmp <= "1000";
+					wy1 <= "1111"; 
+					wy2 <= '0'; 
+					tmp <= "1000";
 					if tmp="0100" then
 						tmp <= "1000";
 					end if;
 				when others	=>	
-					wyjscie1 <= "0000"; 
-					wyjscie2 <= '0';
+					wy1 <= "0000"; 
+					wy2 <= '0';
 					tmp <= "0000";
 			end case;
-      
-		elsif zegar='0' then
-					wyjscie1 <= "0000"; 
+
+		elsif clk='0' then
+			wy1 <= "0000"; 
 			if tmp="1000" then
-				wyjscie2 <= '1';
+				wy2 <= '1';
 			else
-				wyjscie2 <= '0';
+				wy2 <= '0';
 			end if;
 		end if;
 	end process;
 end architecture beh;
+
  
